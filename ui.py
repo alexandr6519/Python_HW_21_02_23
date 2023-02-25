@@ -38,6 +38,6 @@ def interface():
     elif command_number == 7:
         number_line = int(input("Введите номер строки: "))
         if is_number_line(number_line):
-            print("С таким номером есть строка: ")
+            print(f"С номером {number_line} в файле есть строка! ")
         else:
-            print("Нет такой строки: ")
+            print(f"С номером {number_line} в файле нет строки! ")
