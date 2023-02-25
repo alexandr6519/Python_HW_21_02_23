@@ -34,10 +34,11 @@ def filter_data(filter_string):
         for element in list_data:
             temp_record = element.split(";")
             count = 0
-            for record in temp_record:                
-                for element_filter in list_filter:
+            for record in temp_record:           
+                for element_filter in list_filter: 
                     if element_filter.lower() in record.lower() and len(element_filter.lower()) == len(record.lower()):
                         count += 1
+      
             if count == len(list_filter):
                 print(element)
                 is_found = True
@@ -45,13 +46,10 @@ def filter_data(filter_string):
         print("Таких записей не нашли!")
 
 def update_data(number_line):
-    count_lines = get_count_lines()
-
     with open(file_name, "r", encoding="utf-8") as file:
-        list_data = file.readlines()
-        
+        list_data = file.readlines()        
         result_record = list_data[number_line - 1].split(";")  
-        delete_data(number_line)
+        
         name = input("Если не хотите менять имя, то введите пустую строку, иначе введите новое значение: ")
         if len(name) > 0:
             result_record[1] = name
@@ -66,37 +64,16 @@ def update_data(number_line):
 
         adress = input("Если не хотите менять адрес, то введите пустую строку, иначе введите новое значение: ")
         if len(adress) > 0:
-            result_record[4] = adress   
+            result_record[4] = adress  
 
-        list_data[number_line - 1] = (f"{number_line};{result_record[1]};{result_record[2]};{result_record[3]};{result_record[4]};\n") 
+        list_data.pop(number_line - 1)  
+        new_record =  (f"{number_line};{result_record[1]};{result_record[2]};{result_record[3]};{result_record[4]};\n")
+        list_data.insert(number_line - 1, new_record)
 
-    with open(file_name, "a", encoding="utf-8") as file:
-        file.write(f"{result_record[0]};{result_record[1]};{result_record[2]};{result_record[3]};{result_record[4]};\n")
-
-def get_count_lines():
-    with open(file_name, 'r', encoding="utf-8") as file:
-        list_data = file.readlines()
-        return len(list_data)
-     
-def get_number_max_line():
-    with open(file_name, 'r', encoding="utf-8") as file:
-        list_data = file.readlines()
-        max_number = int(list_data[0].split(";")[0])
-        for i in range(1, len(list_data)):
-            temp_record = list_data[i].split(";")
-            if int(temp_record[0]) > max_number:
-                max_number = int(temp_record[0])
-        return max_number 
-
-def is_number_line(number_line):
-    with open(file_name, 'r', encoding="utf-8") as file:
-        list_data = file.readlines()
-        
+    with open(file_name, "w", encoding="utf-8") as file:
         for i in range(len(list_data)):
             temp_record = list_data[i].split(";")
-            if int(temp_record[0]) == number_line:
-                return True
-    return False   
+            file.write(f"{temp_record[0]};{temp_record[1]};{temp_record[2]};{temp_record[3]};{temp_record[4]};\n")
 
 def delete_data(number_line):
     with open(file_name, "r", encoding="utf-8") as file:
@@ -109,4 +86,23 @@ def delete_data(number_line):
         for i in range(len(list_data)):
             temp_record = list_data[i].split(";")
             file.write(f"{temp_record[0]};{temp_record[1]};{temp_record[2]};{temp_record[3]};{temp_record[4]};\n")
-            
+
+def is_number_line(number_line):
+    with open(file_name, 'r', encoding="utf-8") as file:
+        list_data = file.readlines()
+        
+        for i in range(len(list_data)):
+            temp_record = list_data[i].split(";")
+            if int(temp_record[0]) == number_line:
+                return True
+    return False   
+     
+def get_number_max_line():
+    with open(file_name, 'r', encoding="utf-8") as file:
+        list_data = file.readlines()
+        max_number = int(list_data[0].split(";")[0])
+        for i in range(1, len(list_data)):
+            temp_record = list_data[i].split(";")
+            if int(temp_record[0]) > max_number:
+                max_number = int(temp_record[0])
+        return max_number           
